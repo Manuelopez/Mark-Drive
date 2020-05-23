@@ -17,7 +17,14 @@ const noteSchema = new mongoose.Schema(
 			type: mongoose.Schema.Types.ObjectId,
 			requred: true,
 			ref: 'User'
-		}
+		},
+		shares: [
+			{
+				share: {
+					type: String
+				}
+			}
+		]
 	},
 	{
 		timestamps: true
