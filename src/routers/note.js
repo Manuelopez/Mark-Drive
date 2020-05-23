@@ -51,9 +51,12 @@ router.get('/notes', auth, async (req, res) => {
 router.get('/notes/:id', auth, async (req, res) => {
 	const _id = req.params.id;
 	try {
-		const note = await Note.findOne({ _id, owner: req.user._id });
+		let note = await Note.findOne({ _id, owner: req.user._id });
 		if (!note) {
-			return res.status(404).send({ error: 'Not Found' });
+			note = await Note.findOne({ _id, 'shares.share': req.user.email });
+			if (!note) {
+				return res.status(404).send({ error: 'Not Found' });
+			}
 		}
 		res.send({ note });
 	} catch (error) {
@@ -73,13 +76,20 @@ router.patch('/notes/:id', auth, async (req, res) => {
 	}
 
 	try {
-		const note = await Note.findOne({
+		let note = await Note.findOne({
 			_id: req.params.id,
 			owner: req.user._id
 		});
 
 		if (!note) {
-			return res.status(404).send({ error: 'Not Found' });
+			note = await Note.findOne({
+				_id: req.params.id,
+				'shares.share': req.user.email
+			});
+
+			if (!note) {
+				return res.status(404).send({ error: 'Not Found' });
+			}
 		}
 
 		updates.forEach((update) => {

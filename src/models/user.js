@@ -101,6 +101,17 @@ userSchema.pre('save', async function (next) {
 userSchema.pre('remove', async function (next) {
 	const user = this;
 	await Note.deleteMany({ owner: user._id });
+
+	const notes = await Note.find({ 'shares.share': user.email });
+	if (notes) {
+		for (let note of notes) {
+			note.shares = note.shares.filter((share) => {
+				share.share !== user.email;
+			});
+			await note.save();
+		}
+	}
+
 	next();
 });
 
