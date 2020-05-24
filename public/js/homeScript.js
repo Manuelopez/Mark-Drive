@@ -6,6 +6,8 @@ const $sharedArrDiv = document.getElementById('sharedArrDiv');
 //user inputs
 const $form = document.getElementById('noteCreate');
 const $noteTitle = document.getElementById('noteTitle');
+const $logout = document.getElementById('logoutID');
+const $logoutAll = document.getElementById('logoutAllID');
 
 //constant
 let USERNAME;
@@ -18,7 +20,6 @@ async function loadPage() {
   const data = {
     method: 'GET',
     headers: {
-      'Content-Type': 'application/json',
       Authorization: `Bearer ${TOKEN}`
     }
   };
@@ -128,7 +129,6 @@ async function removeAllShare() {
   const data = {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
       Authorization: `Bearer ${TOKEN}`
     }
   };
@@ -199,7 +199,6 @@ async function deleteNote() {
   const data = {
     method: 'DELETE',
     headers: {
-      'Content-Type': 'application/json',
       Authorization: `Bearer ${TOKEN}`
     }
   };
@@ -238,7 +237,51 @@ async function createNote() {
   }
 }
 
+async function logoutUser() {
+  const data = {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${TOKEN}`
+    }
+  };
+  try {
+    const response = await fetch('/users/logout', data);
+    if (response.ok) {
+      localStorage.removeItem('markDriveToken');
+      return (location.pathname = '/');
+    }
+  } catch (error) {
+    console.log('Error occuerd');
+  }
+}
+
+async function logoutAllUser() {
+  const data = {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${TOKEN}`
+    }
+  };
+  try {
+    const response = await fetch('/users/logoutAll', data);
+    if (response.ok) {
+      localStorage.removeItem('markDriveToken');
+      return (location.pathname = '/');
+    }
+  } catch (error) {
+    console.log('Error occuerd');
+  }
+}
+
 $form.addEventListener('submit', (event) => {
   event.preventDefault();
   createNote();
+});
+
+$logout.addEventListener('click', () => {
+  logoutUser();
+});
+
+$logoutAll.addEventListener('click', () => {
+  logoutAllUser();
 });
