@@ -10,6 +10,7 @@ const $noteTitle = document.getElementById('noteTitle');
 //constant
 let USERNAME;
 let EMAIL;
+
 const TOKEN = localStorage.getItem('markDriveToken');
 
 loadPage();
@@ -18,7 +19,7 @@ async function loadPage() {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: 'Bearer ' + TOKEN
+      Authorization: `Bearer ${TOKEN}`
     }
   };
   try {
@@ -59,11 +60,11 @@ function loadNotesData(notes, shared) {
     for (let note of notes) {
       const div = document.createElement('div');
       div.setAttribute('class', 'note');
-      div.id = 'div' + note._id;
+      div.id = `div${note._id}`;
 
       const a = document.createElement('a');
       a.innerHTML = note.title;
-      a.href = '/drive.html?id=' + note._id + '&name=' + USERNAME;
+      a.href = `/drive.html?id=${note._id}&name=${USERNAME}`;
 
       const del = document.createElement('button');
       del.innerHTML = 'Delete';
@@ -98,11 +99,11 @@ function loadNotesData(notes, shared) {
     for (let note of notes) {
       const div = document.createElement('div');
       div.setAttribute('class', 'note');
-      div.id = 'div' + note._id;
+      div.id = `div${note._id}`;
 
       const a = document.createElement('a');
       a.innerHTML = note.title;
-      a.href = '/drive.html?id=' + note._id + '&name=' + USERNAME;
+      a.href = `/drive.html?id=${note._id}&name=${USERNAME}`;
 
       const share = document.createElement('button');
       share.innerHTML = 'Share';
@@ -124,19 +125,74 @@ function loadNotesData(notes, shared) {
 }
 
 async function removeAllShare() {
-  console.log(this.id);
+  const data = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${TOKEN}`
+    }
+  };
+  try {
+    const response = await fetch(`/share/removeAll/${this.id}`, data);
+  } catch (error) {
+    console.log('Error occuerd');
+  }
 }
 
 async function removeShareOwned() {
-  console.log(this.id);
+  const unshareEmail = prompt('Eneter email to remove');
+  const data = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${TOKEN}`
+    },
+    body: JSON.stringify({ email: unshareEmail })
+  };
+  try {
+    const response = await fetch(`/share/remove/${this.id}`, data);
+  } catch (error) {
+    console.log('Error occuerd');
+  }
 }
 
 async function unfollowShareNote() {
-  console.log(this.id);
+  const data = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${TOKEN}`
+    },
+    body: JSON.stringify({ email: EMAIL })
+  };
+
+  try {
+    const response = await fetch(`/share/remove/${this.id}`, data);
+
+    if (response.ok) {
+      const div = document.getElementById(`div${this.id}`);
+      div.parentNode.removeChild(div);
+    }
+  } catch (error) {
+    console.log('error occuerd');
+  }
 }
 
 async function shareNote() {
-  console.log(this.id);
+  const shareEmail = prompt('Enter email to share');
+  const data = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${TOKEN}`
+    },
+    body: JSON.stringify({ email: shareEmail })
+  };
+  try {
+    const response = await fetch(`/share/${this.id}`, data);
+  } catch (error) {
+    console.log('Error occured');
+  }
 }
 
 async function deleteNote() {
@@ -144,17 +200,17 @@ async function deleteNote() {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: 'Bearer ' + TOKEN
+      Authorization: `Bearer ${TOKEN}`
     }
   };
   try {
-    const response = await fetch('/notes/' + this.id, data);
+    const response = await fetch(`/notes/${this.id}`, data);
     const responseData = await response.json();
     if (responseData.error) {
       return console.log('could not delete');
     }
-    console.log(responseData);
-    const div = document.getElementById('div' + this.id);
+
+    const div = document.getElementById(`div${this.id}`);
     div.parentNode.removeChild(div);
   } catch (error) {
     console.log('error occured');
@@ -166,7 +222,7 @@ async function createNote() {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: 'Bearer ' + TOKEN
+      Authorization: `Bearer ${TOKEN}`
     },
     body: JSON.stringify({ title: $noteTitle.value })
   };

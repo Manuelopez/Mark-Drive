@@ -62,7 +62,7 @@ router.post('/share/remove/:id', auth, async (req, res) => {
         return res.status(404).send({ error: 'Not Found' });
       }
       if (req.user.email != req.body.email) {
-        return res.send({ error: 'you dont own it' });
+        return res.status(404).send({ error: 'you dont own it' });
       }
     }
 
