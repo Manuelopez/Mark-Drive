@@ -12,7 +12,7 @@ router.post('/notes', auth, async (req, res) => {
     await note.save();
     res.status(201).send({ note });
   } catch (error) {
-    res.status(400).send({ error });
+    res.status(400).send({ error: 'Bad Request' });
   }
 });
 
@@ -44,7 +44,7 @@ router.get('/notes', auth, async (req, res) => {
       .execPopulate();
     res.send({ note: req.user.notes });
   } catch (error) {
-    res.status(500).send({ error });
+    res.status(500).send({ error: 'server error' });
   }
 });
 
@@ -60,7 +60,7 @@ router.get('/notes/:id', auth, async (req, res) => {
     }
     res.send({ note });
   } catch (error) {
-    res.status(500).send({ error });
+    res.status(500).send({ error: 'Server error' });
   }
 });
 
@@ -99,7 +99,7 @@ router.patch('/notes/:id', auth, async (req, res) => {
     await note.save();
     res.send({ note });
   } catch (error) {
-    res.status(500).send({ error });
+    res.status(500).send({ error: 'server error' });
   }
 });
 
@@ -118,7 +118,7 @@ router.delete('/notes/:id', auth, async (req, res) => {
 
     res.send({ note });
   } catch (error) {
-    res.status(500).send({ error });
+    res.status(500).send({ error: 'server error' });
   }
 });
 

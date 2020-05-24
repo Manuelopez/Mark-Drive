@@ -2,9 +2,17 @@
 <html>
   <head> </head>
 
-  <body>
-    <h3>Create New note</h3>
-    <input id="Title" />
-    <input id="createNote" type="button" value="Create" />
+  <body style="opacity: 0;">
+    <div id="userDiv"></div>
+    <div id="notesDiv">
+      <h3>Create New note</h3>
+      <form id="noteCreate">
+        <input id="noteTitle" required />
+        <input type="submit" value="Create" />
+      </form>
+      <div id="notesArrDiv"><h3>My Notes</h3></div>
+      <div id="sharedArrDiv"><h3>Shared Notes</h3></div>
+    </div>
   </body>
+  <script src="/js/homeScript.js"></script>
 </html>

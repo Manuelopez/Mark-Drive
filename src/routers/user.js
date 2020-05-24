@@ -10,7 +10,7 @@ router.post('/users', async (req, res) => {
     const token = await user.generateAuthToken();
     res.status(201).send({ user, token });
   } catch (error) {
-    res.status(400).send({ error });
+    res.status(400).send({ error: 'Bad Request' });
   }
 });
 
@@ -23,7 +23,7 @@ router.post('/users/login', async (req, res) => {
     const token = await user.generateAuthToken();
     res.send({ user, token });
   } catch (error) {
-    res.status(400).send({ error: 'Invalid Credentials' });
+    res.status(400).send({ error: 'Bad request' });
   }
 });
 
@@ -36,7 +36,7 @@ router.post('/users/logout', auth, async (req, res) => {
 
     res.send();
   } catch (error) {
-    res.status(500).send({ error });
+    res.status(500).send({ error: 'Server Error' });
   }
 });
 
@@ -47,7 +47,7 @@ router.post('/users/logoutAll', auth, async (req, res) => {
 
     res.send();
   } catch (error) {
-    res.status(500).send();
+    res.status(500).send({ error: 'server Error' });
   }
 });
 
@@ -63,7 +63,7 @@ router.patch('/users/me', auth, async (req, res) => {
   });
 
   if (!isValidOperation) {
-    return res.status(400).send({ error: 'invalid operations' });
+    return res.status(400).send({ error: 'Bad Request' });
   }
   try {
     updates.forEach((update) => {
@@ -74,7 +74,7 @@ router.patch('/users/me', auth, async (req, res) => {
 
     res.send({ user: req.user });
   } catch (error) {
-    res.status(400).send({ error });
+    res.status(400).send({ error: 'Bad request' });
   }
 });
 
@@ -83,7 +83,7 @@ router.delete('/users/me', auth, async (req, res) => {
     await req.user.remove();
     res.send({ user: req.user });
   } catch (error) {
-    res.status(500).send({ error });
+    res.status(500).send({ error: 'server error' });
   }
 });
 

@@ -106,7 +106,7 @@ userSchema.pre('remove', async function (next) {
   if (notes) {
     for (let note of notes) {
       note.shares = note.shares.filter((share) => {
-        share.share !== user.email;
+        return share.share !== user.email;
       });
       await note.save();
     }
