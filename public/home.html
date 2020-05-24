@@ -1,34 +1,10 @@
 <!DOCTYPE html>
 <html>
-  <head>
-  </head>
+  <head> </head>
 
   <body>
     <h3>Create New note</h3>
-    <input id='Title'>
-    <input id='createNote' type='button' value='Create'>
-
+    <input id="Title" />
+    <input id="createNote" type="button" value="Create" />
   </body>
-  <script>
-    $title = document.getElementById('Title')
-    $create = document.getElementById('createNote')
-
-    $create.addEventListener('click', ()=>{
-      const data = {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({title: $title.value})
-      }
-
-      createNote(data)
-    })
-
-    async function createNote(data){
-      const response = await fetch('/notes', data)
-      const json = await response.json()
-      console.log(json)
-    }
-  </script>
-
-
 </html>

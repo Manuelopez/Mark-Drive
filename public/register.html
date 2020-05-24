@@ -1,40 +1,12 @@
 <!DOCTYPE html>
 <html>
-  <head>
-  </head>
+  <head> </head>
 
   <body>
-    <form id='reId'>
-      <input type='email' id='emailID'>
-      <input type='password' id='passID'>
-      <input type='submit'>
+    <form id="reId">
+      <input type="email" id="emailID" />
+      <input type="password" id="passID" />
+      <input type="submit" />
     </form>
   </body>
-
-  <script>
-    $form = document.getElementById('reId')
-    $email = document.getElementById('emailID')
-    $pass = document.getElementById('passID')
-
-    $form.addEventListener('submit',(event)=>{
-      event.preventDefault()
- 
-      const formVals = {email: $email.value, password: $pass.value}
-      const data = {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(formVals)
-      }
-      registerUser(data)
-
-      
-    })
-    async function registerUser(data){
-
-      const response = await fetch('/users', data)
-      const json = await response.json()
-      console.log(json)
-    }
-  </script>
-
 </html>
