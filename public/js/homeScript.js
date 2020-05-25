@@ -47,9 +47,8 @@ function loadUserData(user) {
   const name = document.createElement('h3');
   USERNAME = user.user.name;
   EMAIL = user.user.email;
-  name.innerHTML = 'Username: ' + user.user.name;
+  name.innerText = 'Username: ' + user.user.name;
   const email = document.createElement('h3');
-  email.innerHTML = 'Email: ' + user.user.email;
   $userDiv.appendChild(name);
 
   $userDiv.appendChild(email);
@@ -63,27 +62,27 @@ function loadNotesData(notes, shared) {
       div.id = `div${note._id}`;
 
       const a = document.createElement('a');
-      a.innerHTML = note.title;
-      const link = btoa(`id=${note._id}&name=${USERNAME}`);
+      a.innerText = note.title;
+      const link = btoa(`id=${note._id}&name=${EMAIL}`);
       a.href = `/drive.html?${link}`;
 
       const del = document.createElement('button');
-      del.innerHTML = 'Delete';
+      del.innerText = 'Delete';
       del.id = note._id;
       del.onclick = deleteNote;
 
       const share = document.createElement('button');
-      share.innerHTML = 'Share';
+      share.innerText = 'Share';
       share.id = note._id;
       share.onclick = shareNote;
 
       const unshare = document.createElement('button');
-      unshare.innerHTML = 'Unshare';
+      unshare.innerText = 'Unshare';
       unshare.id = note._id;
       unshare.onclick = removeShareOwned;
 
       const unshareAll = document.createElement('button');
-      unshareAll.innerHTML = 'Unshare All';
+      unshareAll.innerText = 'Unshare All';
       unshareAll.id = note._id;
       unshareAll.onclick = removeAllShare;
 
@@ -103,17 +102,17 @@ function loadNotesData(notes, shared) {
       div.id = `div${note._id}`;
 
       const a = document.createElement('a');
-      a.innerHTML = note.title;
-      const link = btoa(`id=${note._id}&name=${USERNAME}`);
+      a.innerText = note.title;
+      const link = btoa(`id=${note._id}&name=${EMAIL}`);
       a.href = `/drive.html?${link}`;
 
       const share = document.createElement('button');
-      share.innerHTML = 'Share';
+      share.innerText = 'Share';
       share.id = note._id;
       share.onclick = shareNote;
 
       const unfollow = document.createElement('button');
-      unfollow.innerHTML = 'Unfollow';
+      unfollow.innerText = 'Unfollow';
       unfollow.id = note._id;
       unfollow.onclick = unfollowShareNote;
 
