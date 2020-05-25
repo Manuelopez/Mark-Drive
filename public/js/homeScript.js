@@ -12,7 +12,6 @@ const $logoutAll = document.getElementById('logoutAllID');
 //constant
 let USERNAME;
 let EMAIL;
-
 const TOKEN = localStorage.getItem('markDriveToken');
 
 loadPage();
@@ -65,7 +64,8 @@ function loadNotesData(notes, shared) {
 
       const a = document.createElement('a');
       a.innerHTML = note.title;
-      a.href = `/drive.html?id=${note._id}&name=${USERNAME}`;
+      const link = btoa(`id=${note._id}&name=${USERNAME}`);
+      a.href = `/drive.html?${link}`;
 
       const del = document.createElement('button');
       del.innerHTML = 'Delete';
@@ -104,7 +104,8 @@ function loadNotesData(notes, shared) {
 
       const a = document.createElement('a');
       a.innerHTML = note.title;
-      a.href = `/drive.html?id=${note._id}&name=${USERNAME}`;
+      const link = btoa(`id=${note._id}&name=${USERNAME}`);
+      a.href = `/drive.html?${link}`;
 
       const share = document.createElement('button');
       share.innerHTML = 'Share';

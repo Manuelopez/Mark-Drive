@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html>
-  <head>
-  </head>
+  <head> </head>
 
-  <body>
-    <h3 id='noteTitle'>Note title</h3>
-    <div>
-      <textarea id='noteBody'></textarea>
+  <body style="opacity: 0;">
+    <div id="noteHeader">
+      <input id="noteTitle" type="text" />
+      <button id="saveNote">Save</button>
     </div>
-    <div id='markedContainer'></div>
-    
+    <br />
+    <div id="editorContainer">
+      <textarea id="noteBody"></textarea>
+    </div>
+    <div id="markedContainer"></div>
   </body>
-
-
+  <script src="/js/driveScript.js"></script>
 </html>
