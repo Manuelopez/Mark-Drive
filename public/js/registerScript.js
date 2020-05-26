@@ -1,12 +1,12 @@
-$email = document.getElementById('emailID');
-$pass = document.getElementById('passID');
-$form = document.getElementById('formID');
-
+const $email = document.getElementById('emailID');
+const $name = document.getElementById('nameID');
+const $pass = document.getElementById('passID');
+const $form = document.getElementById('formID');
 if (localStorage.getItem('markDriveToken')) {
-  auth();
+  loadPage();
 }
 
-async function auth() {
+async function loadPage() {
   const token = localStorage.getItem('markDriveToken');
   const data = {
     method: 'GET',
@@ -17,7 +17,6 @@ async function auth() {
   };
   try {
     const response = await fetch('/users/me', data);
-    const responseData = await response.json();
     if (response.ok) {
       return (location.pathname = '/home.html');
     }
@@ -26,29 +25,31 @@ async function auth() {
   }
 }
 
-$form.addEventListener('submit', (event) => {
-  event.preventDefault();
-  loginUser();
-});
-
-async function loginUser() {
-  const userData = { email: $email.value, password: $pass.value };
+async function signUP() {
+  const userData = {
+    email: $email.value,
+    password: $pass.value,
+    name: $name.value
+  };
   const data = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(userData)
   };
   try {
-    const response = await fetch('/users/login', data);
+    const response = await fetch('/users', data);
     const responseData = await response.json();
-
-    if (responseData.error) {
-      alert('invalid credantials');
-    } else {
+    if (response.ok) {
       localStorage.setItem('markDriveToken', responseData.token);
-      window.location.pathname = '/home.html';
+      return (window.location.pathname = '/home.html');
     }
+    console.log('error');
   } catch (error) {
     alert('error occuerd');
   }
 }
+
+$form.addEventListener('submit', (event) => {
+  event.preventDefault();
+  signUP();
+});
