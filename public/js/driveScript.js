@@ -16,7 +16,7 @@ const $noteTitle = document.getElementById('noteTitle');
 const $noteBody = document.getElementById('noteBody');
 const $saveNote = document.getElementById('saveNote');
 const $usersInRoom = document.getElementById('usersInRoom');
-$markedContainer = document.getElementById('markedContainer');
+const $markedContainer = document.getElementById('markedContainer');
 
 loadPage().then((data) => {
   socket.emit('join', { username, room }, (error) => {
@@ -26,6 +26,7 @@ loadPage().then((data) => {
     }
   });
 });
+
 async function loadPage() {
   const data = {
     method: 'GET',
@@ -52,6 +53,24 @@ function loadNote({ title, body }) {
   $noteBody.value = body;
 }
 
+$saveNote.onclick = async function () {
+  const data = {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${TOKEN}`
+    },
+    body: JSON.stringify({ title: $noteTitle.value, body: $noteBody.value })
+  };
+
+  try {
+    await fetch(`/notes/${room}`, data);
+  } catch (error) {
+    alert('error occured');
+  }
+};
+
+// socketIO
 socket.on('getData', (data) => {
   socket.emit('recentData', $noteBody.value, room);
 });
