@@ -16,8 +16,8 @@ const $noteTitle = document.getElementById('noteTitle');
 const $noteBody = document.getElementById('noteBody');
 const $saveNote = document.getElementById('saveNote');
 const $usersInRoom = document.getElementById('usersInRoom');
-const $markedContainer = document.getElementById('markedContainer');
-// const $renderSlides = document.getElementById('slides');
+
+const $renderSlides = document.getElementById('slides');
 
 loadPage().then((data) => {
   socket.emit('join', { username, room }, (error) => {
@@ -72,6 +72,12 @@ async function saveNote() {
   }
 }
 
+$renderSlides.addEventListener('click', () => {
+  saveNote().then(() => {
+    location.pathname = '/slides.html';
+  });
+});
+
 // socketIO
 socket.on('getData', (data) => {
   socket.emit('recentData', $noteBody.value, room);
@@ -79,7 +85,6 @@ socket.on('getData', (data) => {
 
 socket.on('contentData', ({ editorData, markedData }) => {
   $noteBody.value = editorData;
-  $markedContainer.innerHTML = markedData;
 });
 
 socket.on('roomData', ({ users }) => {
