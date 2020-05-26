@@ -8,6 +8,7 @@ const $form = document.getElementById('noteCreate');
 const $noteTitle = document.getElementById('noteTitle');
 const $logout = document.getElementById('logoutID');
 const $logoutAll = document.getElementById('logoutAllID');
+const $noteType = document.getElementById('selectID');
 
 //constant
 let USERNAME;
@@ -57,72 +58,91 @@ function loadUserData(user) {
 function loadNotesData(notes, shared) {
   if (!shared) {
     for (let note of notes) {
-      const div = document.createElement('div');
-      div.setAttribute('class', 'note');
-      div.id = `div${note._id}`;
-
-      const a = document.createElement('a');
-      a.innerText = note.title;
-      const link = btoa(`id=${note._id}&name=${EMAIL}`);
-      a.href = `/drive.html?${link}`;
-
-      const del = document.createElement('button');
-      del.innerText = 'Delete';
-      del.id = note._id;
-      del.onclick = deleteNote;
-
-      const share = document.createElement('button');
-      share.innerText = 'Share';
-      share.id = note._id;
-      share.onclick = shareNote;
-
-      const unshare = document.createElement('button');
-      unshare.innerText = 'Unshare';
-      unshare.id = note._id;
-      unshare.onclick = removeShareOwned;
-
-      const unshareAll = document.createElement('button');
-      unshareAll.innerText = 'Unshare All';
-      unshareAll.id = note._id;
-      unshareAll.onclick = removeAllShare;
-
-      div.appendChild(a);
-      div.appendChild(share);
-      div.appendChild(unshare);
-      div.appendChild(unshareAll);
-      div.appendChild(del);
-
-      div.appendChild(document.createElement('br'));
-      $notesArrDiv.appendChild(div);
+      createNoteDiv(note, note.nType);
     }
   } else {
     for (let note of notes) {
-      const div = document.createElement('div');
-      div.setAttribute('class', 'note');
-      div.id = `div${note._id}`;
-
-      const a = document.createElement('a');
-      a.innerText = note.title;
-      const link = btoa(`id=${note._id}&name=${EMAIL}`);
-      a.href = `/drive.html?${link}`;
-
-      const share = document.createElement('button');
-      share.innerText = 'Share';
-      share.id = note._id;
-      share.onclick = shareNote;
-
-      const unfollow = document.createElement('button');
-      unfollow.innerText = 'Unfollow';
-      unfollow.id = note._id;
-      unfollow.onclick = unfollowShareNote;
-
-      div.appendChild(a);
-      div.append(share);
-      div.append(unfollow);
-      div.appendChild(document.createElement('br'));
-      $sharedArrDiv.appendChild(div);
+      createShareNoteDiv(note, note.nType);
     }
   }
+}
+
+function createShareNoteDiv(note, nType) {
+  let linkElement = '/drive.html?';
+  const div = document.createElement('div');
+  div.setAttribute('class', 'note');
+  div.id = `div${note._id}`;
+  if (nType != 'note') {
+    div.setAttribute('class', 'note slides');
+    linkElement = '/driveSlides.html?';
+  }
+
+  const a = document.createElement('a');
+  a.innerText = note.title;
+  const link = btoa(`id=${note._id}&name=${EMAIL}`);
+  a.href = `${linkElement + link}`;
+
+  const share = document.createElement('button');
+  share.innerText = 'Share';
+  share.id = note._id;
+  share.onclick = shareNote;
+
+  const unfollow = document.createElement('button');
+  unfollow.innerText = 'Unfollow';
+  unfollow.id = note._id;
+  unfollow.onclick = unfollowShareNote;
+
+  div.appendChild(a);
+  div.append(share);
+  div.append(unfollow);
+  div.appendChild(document.createElement('br'));
+  $sharedArrDiv.appendChild(div);
+}
+
+function createNoteDiv(note, nType) {
+  let linkElement = '/drive.html?';
+  const div = document.createElement('div');
+  div.setAttribute('class', 'note');
+  div.id = `div${note._id}`;
+
+  if (nType != 'note') {
+    linkElement = '/driveSlides.html?';
+    div.setAttribute('class', 'note slides');
+  }
+
+  const a = document.createElement('a');
+  a.innerText = note.title;
+  const link = btoa(`id=${note._id}&name=${EMAIL}`);
+  a.href = `${linkElement + link}`;
+
+  const del = document.createElement('button');
+  del.innerText = 'Delete';
+  del.id = note._id;
+  del.onclick = deleteNote;
+
+  const share = document.createElement('button');
+  share.innerText = 'Share';
+  share.id = note._id;
+  share.onclick = shareNote;
+
+  const unshare = document.createElement('button');
+  unshare.innerText = 'Unshare';
+  unshare.id = note._id;
+  unshare.onclick = removeShareOwned;
+
+  const unshareAll = document.createElement('button');
+  unshareAll.innerText = 'Unshare All';
+  unshareAll.id = note._id;
+  unshareAll.onclick = removeAllShare;
+
+  div.appendChild(a);
+  div.appendChild(share);
+  div.appendChild(unshare);
+  div.appendChild(unshareAll);
+  div.appendChild(del);
+
+  div.appendChild(document.createElement('br'));
+  $notesArrDiv.appendChild(div);
 }
 
 async function removeAllShare() {
@@ -223,7 +243,7 @@ async function createNote() {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${TOKEN}`
     },
-    body: JSON.stringify({ title: $noteTitle.value })
+    body: JSON.stringify({ title: $noteTitle.value, nType: $noteType.value })
   };
   try {
     const response = await fetch('/notes', data);

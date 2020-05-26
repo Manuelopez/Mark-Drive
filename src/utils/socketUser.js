@@ -6,7 +6,7 @@ const addUser = ({ id, username, room }) => {
   }
 
   const exsitingUser = users.find((user) => {
-    return user.room === room && user.username === username;
+    return user.room === room && user.username === username && user.id === id;
   });
 
   if (exsitingUser) {

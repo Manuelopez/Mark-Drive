@@ -18,6 +18,10 @@ const noteSchema = new mongoose.Schema(
       requred: true,
       ref: 'User'
     },
+    nType: {
+      type: String,
+      default: 'note'
+    },
     shares: [
       {
         share: {
