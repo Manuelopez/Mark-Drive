@@ -37,5 +37,5 @@ async function loadPage() {
 }
 
 function loadNote({ body }) {
-  $source.innerText = body;
+  $source.innerHTML = body;
 }
