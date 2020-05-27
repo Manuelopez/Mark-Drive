@@ -1,22 +1,35 @@
 <!DOCTYPE html>
 <html>
-  <head> </head>
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/kognise/water.css@latest/dist/light.min.css"
+    />
+    <link rel="stylesheet" href="/css/homeStyle.css" />
+  </head>
 
   <body style="opacity: 0;">
-    <div id="userDiv">
-      <button id="logoutID">Logout</button>
-      <button id="logoutAllID">Logout All</button>
-    </div>
-    <div id="notesDiv">
-      <h3>Create New note</h3>
-      <form id="noteCreate">
-        <input id="noteTitle" required />
-        <input type="submit" value="Create" />
-        <select id="selectID">
-          <option value="note">Mark Note</option>
-          <option value="slides">Mark Slides</option>
-        </select>
-      </form>
+    <div id="container">
+      <div id="header">
+        <div id="infoDiv">
+          <div id="userDiv"></div>
+          <div>
+            <button id="logoutID">Logout</button>
+            <button id="logoutAllID">Logout All</button>
+          </div>
+        </div>
+        <div id="notesDiv">
+          <h3>Create New note:</h3>
+          <form id="noteCreate">
+            <input id="noteTitle" required />
+            <input type="submit" value="Create" />
+            <select id="selectID">
+              <option value="note">Mark Note</option>
+              <option value="slides">Mark Slides</option>
+            </select>
+          </form>
+        </div>
+      </div>
       <div id="notesArrDiv"><h3>My Notes</h3></div>
       <div id="sharedArrDiv"><h3>Shared Notes</h3></div>
     </div>

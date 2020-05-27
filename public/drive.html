@@ -1,19 +1,29 @@
 <!DOCTYPE html>
 <html>
-  <head> </head>
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/kognise/water.css@latest/dist/light.min.css"
+    />
+    <link rel="stylesheet" href="/css/driveStyle.css" />
+  </head>
 
   <body style="opacity: 0;">
-    <div>
+    <div class="container">
       <div id="noteHeader">
         <input id="noteTitle" type="text" />
         <button id="saveNote">Save</button>
-        <div id="usersInRoom"></div>
+        <div>
+          Users:
+          <div id="usersInRoom"></div>
+        </div>
       </div>
-      <br />
-      <div id="editorContainer">
-        <textarea id="noteBody"></textarea>
+      <div class="flexContainer">
+        <div id="editorContainer">
+          <textarea id="noteBody"></textarea>
+        </div>
+        <div id="markedContainer"></div>
       </div>
-      <div id="markedContainer"></div>
     </div>
   </body>
   <script src="/socket.io/socket.io.js"></script>

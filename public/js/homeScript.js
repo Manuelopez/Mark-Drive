@@ -48,7 +48,7 @@ function loadUserData(user) {
   const name = document.createElement('h3');
   USERNAME = user.user.name;
   EMAIL = user.user.email;
-  name.innerText = 'Username: ' + user.user.name;
+  name.innerText = user.user.name;
   const email = document.createElement('h3');
   $userDiv.appendChild(name);
 
@@ -81,6 +81,7 @@ function createShareNoteDiv(note, nType) {
   a.innerText = note.title;
   const link = btoa(`id=${note._id}&name=${EMAIL}`);
   a.href = `${linkElement + link}`;
+  a.setAttribute('class', 'dropbtn');
 
   const share = document.createElement('button');
   share.innerText = 'Share';
@@ -92,10 +93,14 @@ function createShareNoteDiv(note, nType) {
   unfollow.id = note._id;
   unfollow.onclick = unfollowShareNote;
 
+  const drop = document.createElement('div');
+  drop.setAttribute('class', 'dropContent');
+  drop.append(share);
+  drop.append(unfollow);
+
   div.appendChild(a);
-  div.append(share);
-  div.append(unfollow);
-  div.appendChild(document.createElement('br'));
+  div.appendChild(drop);
+
   $sharedArrDiv.appendChild(div);
 }
 
@@ -114,6 +119,7 @@ function createNoteDiv(note, nType) {
   a.innerText = note.title;
   const link = btoa(`id=${note._id}&name=${EMAIL}`);
   a.href = `${linkElement + link}`;
+  a.setAttribute('class', 'dropbtn');
 
   const del = document.createElement('button');
   del.innerText = 'Delete';
@@ -135,13 +141,18 @@ function createNoteDiv(note, nType) {
   unshareAll.id = note._id;
   unshareAll.onclick = removeAllShare;
 
-  div.appendChild(a);
-  div.appendChild(share);
-  div.appendChild(unshare);
-  div.appendChild(unshareAll);
-  div.appendChild(del);
+  const drop = document.createElement('div');
+  drop.setAttribute('class', 'dropContent');
+  drop.appendChild(share);
+  drop.appendChild(unshare);
+  drop.appendChild(unshareAll);
+  drop.appendChild(del);
 
-  div.appendChild(document.createElement('br'));
+  div.appendChild(a);
+
+  div.appendChild(drop);
+
+  // div.appendChild(document.createElement('br'));
   $notesArrDiv.appendChild(div);
 }
 

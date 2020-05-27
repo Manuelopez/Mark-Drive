@@ -1,8 +1,17 @@
 const marked = require('marked');
 const purify = require('sanitize-html');
 
+marked.setOptions({
+  gfm: true,
+  breaks: true
+});
+
 function getMarkedContent(data) {
-  const markedData = marked(purify(data));
+  const markedData = marked(data);
   return markedData;
 }
-module.exports = getMarkedContent;
+function getCleanContent(data) {
+  const cleanData = purify(data);
+  return cleanData;
+}
+module.exports = { getMarkedContent, getCleanContent };

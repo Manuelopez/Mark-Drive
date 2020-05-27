@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html>
-  <head> </head>
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/kognise/water.css@latest/dist/light.min.css"
+    />
+    <link rel="stylesheet" href="/css/driveStyle.css" />
+  </head>
 
   <body style="opacity: 0;">
     <div>
@@ -8,10 +14,13 @@
         <input id="noteTitle" type="text" />
         <button id="saveNote">Save</button>
         <button id="slides">Render slides</button>
-        <div id="usersInRoom"></div>
+        <div>
+          Users:
+          <div id="usersInRoom"></div>
+        </div>
       </div>
       <br />
-      <div id="editorContainer">
+      <div id="editorContainer" class="editorSlides">
         <textarea id="noteBody"></textarea>
       </div>
     </div>

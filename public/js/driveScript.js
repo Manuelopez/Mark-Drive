@@ -86,6 +86,7 @@ socket.on('roomData', ({ users }) => {
   $usersInRoom.innerHTML = '';
   for (let user of users) {
     const div = document.createElement('div');
+    div.setAttribute('class', 'user');
     div.innerText = user.username;
     $usersInRoom.appendChild(div);
   }
