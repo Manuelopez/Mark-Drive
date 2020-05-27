@@ -31,6 +31,10 @@ router.post('/share/:id', auth, async (req, res) => {
       return res.status(404).send({ error: 'Not found' });
     }
 
+    if (JSON.stringify(user._id) == JSON.stringify(note.owner)) {
+      return res.status(400).send({ error: 'user owns note' });
+    }
+
     const exists = note.shares.find((share) => {
       return share.share == user.email;
     });
