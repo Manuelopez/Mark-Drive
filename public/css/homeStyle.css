@@ -2,14 +2,14 @@ body {
   margin: 0 !important;
   padding: 0;
   max-width: 100vw !important;
-  height: 100% !important;
+  max-height: 100vh !important;
   margin-left: 18vw !important;
   margin-right: 18vw !important;
 }
 
 #container {
   width: 100%;
-  height: 100%;
+  height: 100vh !important;
   display: grid;
   grid-template-columns: 50% auto;
   grid-template-rows: 200px auto;
@@ -50,41 +50,57 @@ form {
   flex-direction: column;
   align-items: center;
   width: 100%;
+  height: 100%;
+  overflow-y: auto;
 }
 
 #sharedArrDiv {
+  direction: rtl;
   grid-area: shared;
   display: flex;
   flex-direction: column;
   align-items: center;
+  overflow-y: auto;
 }
 
 .note {
+  margin-bottom: 20px;
   display: flex;
   flex-direction: column;
-  width: 100% !important;
+  width: 50% !important;
   text-align: center;
   align-items: center;
+  background-color: #ddd;
+}
+
+.note a {
+  padding-top: 25px;
+  width: 100%;
+  height: 50px;
+  color: #000;
+  text-decoration: none;
 }
 
 .dropContent {
-  width: fit-content !important;
-
+  width: 100% !important;
   display: none;
-  background-color: #f1f1f1;
+  background-color: #ddd;
   z-index: 1;
 }
 
-.dropContent button:hover {
+.note button {
+  margin: 0;
+  width: 100% !important;
   background-color: #ddd;
+}
+
+.dropContent button:hover {
+  background-color: #bdbcbc;
 }
 .note:hover .dropContent {
   display: block;
 }
 
-.note:hover .dropbtn {
-  background-color: hsla(234, 15%, 62%, 0.89);
-}
-.slides:hover .dropbtn {
-  background-color: #3e8e41;
+.slides a {
+  background-color: #b9d9e493;
 }
