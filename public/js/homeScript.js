@@ -45,7 +45,7 @@ async function loadPage() {
 }
 
 function loadUserData(user) {
-  const name = document.createElement('h3');
+  const name = document.createElement('h1');
   USERNAME = user.user.name;
   EMAIL = user.user.email;
   name.innerText = user.user.name;
