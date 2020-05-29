@@ -19,15 +19,6 @@ const $usersInRoom = document.getElementById('usersInRoom');
 const $markedContainer = document.getElementById('markedContainer');
 // const $renderSlides = document.getElementById('slides');
 
-loadPage().then((data) => {
-  socket.emit('join', { username, room }, (error) => {
-    if (error) {
-      alert(error);
-      location.href = '/home.html';
-    }
-  });
-});
-
 async function loadPage() {
   const data = {
     method: 'GET',
@@ -72,13 +63,24 @@ async function saveNote() {
   }
 }
 
+loadPage().then((data) => {
+  socket.emit('join', { username, room }, (error) => {
+    if (error) {
+      alert(error);
+      location.href = '/home.html';
+    }
+  });
+});
+
 // socketIO
 socket.on('getData', (data) => {
   socket.emit('recentData', $noteBody.value, room);
 });
 
 socket.on('contentData', ({ editorData, markedData }) => {
+  const cursor = $noteBody.selectionStart;
   $noteBody.value = editorData;
+  $noteBody.selectionEnd = cursor;
   $markedContainer.innerHTML = markedData;
 });
 
