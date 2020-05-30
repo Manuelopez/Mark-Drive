@@ -12,7 +12,6 @@ const {
   removeUser,
   getUsersInRoom
 } = require('./utils/socketUser');
-const { getMarkedContent, getCleanContent } = require('./utils/socketNote');
 
 //server
 const port = process.env.PORT;
@@ -43,21 +42,17 @@ io.on('connection', (socket) => {
 
   socket.on('recentData', (data, room) => {
     const users = getUsersInRoom(room);
-    const cleanContent = getCleanContent(data);
-    const dataMarked = getMarkedContent(cleanContent);
+
     io.to(users[users.length - 1].id).emit('contentData', {
-      editorData: data,
-      markedData: dataMarked
+      editorData: data
     });
   });
 
   socket.on('editorValue', (data) => {
     const user = getUser(socket.id);
-    const cleanContent = getCleanContent(data);
-    const markedData = getMarkedContent(cleanContent);
+
     io.to(user.room).emit('contentData', {
-      editorData: data,
-      markedData: markedData
+      editorData: data
     });
   });
 

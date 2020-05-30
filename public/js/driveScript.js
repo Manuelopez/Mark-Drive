@@ -1,4 +1,9 @@
 const socket = io();
+mermaid.initialize({ startOnLoad: false });
+marked.setOptions({
+  gfm: true,
+  breaks: true
+});
 
 // CONSTANTS
 let queryString;
@@ -17,7 +22,7 @@ const $noteBody = document.getElementById('noteBody');
 const $saveNote = document.getElementById('saveNote');
 const $usersInRoom = document.getElementById('usersInRoom');
 const $markedContainer = document.getElementById('markedContainer');
-// const $renderSlides = document.getElementById('slides');
+let renderDELTA = 0;
 
 async function loadPage() {
   const data = {
@@ -77,11 +82,11 @@ socket.on('getData', (data) => {
   socket.emit('recentData', $noteBody.value, room);
 });
 
-socket.on('contentData', ({ editorData, markedData }) => {
+socket.on('contentData', ({ editorData }) => {
   const cursor = $noteBody.selectionStart;
   $noteBody.value = editorData;
   $noteBody.selectionEnd = cursor;
-  $markedContainer.innerHTML = markedData;
+  generateMarkedContent();
 });
 
 socket.on('roomData', ({ users }) => {
@@ -97,3 +102,102 @@ socket.on('roomData', ({ users }) => {
 $noteBody.oninput = function () {
   socket.emit('editorValue', $noteBody.value);
 };
+
+// INER HTML FOR MARKED CONTENT
+
+function generateMarkedContent() {
+  let mermaid = generateMermaid($noteBody.value);
+  let content = mermaid[0];
+  let math = generateMath(content);
+  content = marked(math[0]);
+
+  for (let y of mermaid[1]) {
+    content = content.replace('MARKDRIVEMERMAIDAPI', y);
+  }
+  for (let y of math[1]) {
+    content = content.replace('MARKDRIVEMATHAPI', y);
+  }
+  $markedContainer.innerHTML = content;
+}
+
+function generateMermaid(sentence, array) {
+  let x;
+  let svg;
+  let arr = [];
+  if (array) {
+    arr.push(...array);
+  }
+  if (sentence.match('```mermaid\n') && sentence.match('mermaid```')) {
+    x = sentence.substring(
+      sentence.indexOf('```mermaid'),
+      sentence.indexOf('mermaid```')
+    );
+
+    x = x.replace('```mermaid', '');
+    try {
+      svg = renderMermaid(x.replace(/^\s+|\s+$/g, ''));
+    } catch (e) {
+      return [sentence, []];
+    }
+
+    arr.push(svg);
+
+    x = sentence.replace(
+      '```mermaid' + x + 'mermaid```',
+      'MARKDRIVEMERMAIDAPI'
+    );
+
+    return generateMermaid(x, arr);
+  } else {
+    return [sentence, arr];
+  }
+}
+
+function renderMermaid(x) {
+  renderDELTA++;
+  let svgA;
+  try {
+    mermaid.render('GRAPH' + renderDELTA, x, function (svgCode) {
+      svgA = svgCode;
+    });
+  } catch (e) {
+    return 'GRAPH DEFF INCORRECT';
+  }
+  return svgA;
+}
+
+function generateMath(sentence, array) {
+  let x;
+  let svg;
+  let arr = [];
+  if (array) {
+    arr.push(...array);
+  }
+  if (sentence.match('```math\n') && sentence.match('math```')) {
+    x = sentence.substring(
+      sentence.indexOf('```math'),
+      sentence.indexOf('math```')
+    );
+
+    x = x.replace('```math', '');
+    try {
+      svg = renderMath(x.replace(/^\s+|\s+$/g, ''));
+    } catch (e) {
+      return [sentence, []];
+    }
+
+    arr.push(svg);
+
+    x = sentence.replace('```math' + x + 'math```', 'MARKDRIVEMATHAPI');
+
+    return generateMath(x, arr);
+  } else {
+    return [sentence, arr];
+  }
+}
+
+function renderMath(x) {
+  return katex.renderToString(x, {
+    throwOnError: false
+  });
+}

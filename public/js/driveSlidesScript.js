@@ -83,7 +83,7 @@ socket.on('getData', (data) => {
   socket.emit('recentData', $noteBody.value, room);
 });
 
-socket.on('contentData', ({ editorData, markedData }) => {
+socket.on('contentData', ({ editorData }) => {
   $noteBody.value = editorData;
 });
 
