@@ -9,6 +9,9 @@ body {
   margin: 0;
   padding: 0;
 }
+textarea {
+  resize: none;
+}
 .container {
   display: flex;
   flex-flow: column;
@@ -22,12 +25,12 @@ body {
   position: fixed;
   left: 0;
   width: 50%;
-  height: 100%;
+  height: calc(100% - 50px);
 }
 #markedContainer {
   position: fixed;
   width: 50%;
-  height: 100%;
+  height: calc(100% - 50px);
   overflow-wrap: break-word;
   overflow-y: auto;
   right: 0px;
